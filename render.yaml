@@ -14,7 +14,7 @@ services:
     name: ancachess-back
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: " daphne --port 10000 --bind 0.0.0.0 ancachessback.asgi:application"
+    startCommand: "daphne --port 10000 --bind 0.0.0.0 ancachessback.asgi:application"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
