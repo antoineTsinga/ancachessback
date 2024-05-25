@@ -11,7 +11,7 @@ services:
     ipAllowList: []
   - type: web
     plan: free
-    name: ancachessback
+    name: ancachess-back
     runtime: python
     buildCommand: "./build.sh"
     startCommand: "python -m gunicorn ancachessback.asgi:application -k uvicorn.workers.UvicornWorker"
