@@ -26,7 +26,7 @@ SECRET_KEY = "django-insecure-r5iw6=o=57=%^6hzg6z@)2%v9hysxeizgan7@q3_n!8u8-w%11
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ancachess.localhost", "localhost"]
+ALLOWED_HOSTS = ["localhost"]
 
 
 def get_data_base_path():
@@ -43,8 +43,8 @@ CHANNEL_LAYERS = {
     },
 }
 
-CORS_ALLOWED_ORIGINS = ["http://ancachess.localhost:3000"]
-CSRF_TRUSTED_ORIGINS = ["http://ancachess.localhost:3000"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
+CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
