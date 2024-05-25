@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 DEBUG = False
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
@@ -40,9 +40,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 
 # Application definition
 
-CORS_ALLOWED_ORIGINS = [
-    env('ALLOWED_HOSTS'),
-]
+CORS_ALLOWED_ORIGINS = env('CORS_ALLOWED_ORIGINS')
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
