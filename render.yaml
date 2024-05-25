@@ -14,7 +14,7 @@ services:
     name: ancachess-back
     runtime: python
     buildCommand: "./build.sh"
-    startCommand: "daphne --port 10000 --bind 0.0.0.0 ancachessback.asgi:application"
+    startCommand: "python -m gunicorn ancachessback.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
