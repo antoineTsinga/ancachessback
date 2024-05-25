@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from .base import *
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +26,7 @@ SECRET_KEY = "django-insecure-r5iw6=o=57=%^6hzg6z@)2%v9hysxeizgan7@q3_n!8u8-w%11
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["ancachess.localhost", "localhost"]
 
 
 def get_data_base_path():
@@ -42,11 +43,8 @@ CHANNEL_LAYERS = {
     },
 }
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-
+CORS_ALLOWED_ORIGINS = ["http://ancachess.localhost:3000"]
+CSRF_TRUSTED_ORIGINS = ["http://ancachess.localhost:3000"]
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -56,3 +54,11 @@ DATABASES = {
         "NAME": get_data_base_path(),
     }
 }
+
+# This production code might break development mode, so we check whether we're in DEBUG mode
+
+# Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
+# and renames the files with unique names for each version to support long-term caching
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

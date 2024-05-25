@@ -32,20 +32,18 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 DEBUG = False
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['ancachess.vercel.app', 'ancachess-back.onrender.com']
 
-CSRF_TRUSTED_ORIGINS = [env('CORS_ALLOWED_ORIGINS')]
+CSRF_TRUSTED_ORIGINS = ["https://ancachess.vercel.app"]
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+# RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+# if RENDER_EXTERNAL_HOSTNAME:
+#     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
-CORS_ALLOWED_ORIGINS = [env('CORS_ALLOWED_ORIGINS')]
+CORS_ALLOWED_ORIGINS = ["https://ancachess.vercel.app"]
 
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
