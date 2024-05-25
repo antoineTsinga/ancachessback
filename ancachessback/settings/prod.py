@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
 from .base import *
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,15 +48,13 @@ CORS_ALLOWED_ORIGINS = [
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': env('DB_NAME'),
-        'USER': env('DB_USER'),
-        'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DATABASE_URL '),
-        'PORT': env('DB_PORT'),
+
+    'default': dj_database_url.config(
+            # Replace this value with your local database's connection string.
+            default=env('DATABASE_URL'),
+            conn_max_age=600
+        )
     }
-}
 
 CHANNEL_LAYERS = {
     'default': {

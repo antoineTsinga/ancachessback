@@ -5,6 +5,10 @@ databases:
     user: ancachess_database_user
 
 services:
+  - type: redis
+    name: ancachess-redis
+    plan: free
+    ipAllowList: []
   - type: web
     plan: free
     name: ancachessback
