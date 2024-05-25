@@ -17,8 +17,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 env = os.environ.get
 
-ALLOWED_HOSTS = [env('ALLOWED_HOSTS')]
-
 
 def get_secret_key_from_file(file_path):
     try:
@@ -28,9 +26,16 @@ def get_secret_key_from_file(file_path):
         raise Exception(f"Unable to read the secret key file: {file_path}")
 
 
-SECRET_KEY = get_secret_key_from_file(env('SECRET_KEY_FILE'))
+SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 
 DEBUG = False
+
+# https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
+ALLOWED_HOSTS = []
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -47,7 +52,7 @@ DATABASES = {
         'NAME': env('DB_NAME'),
         'USER': env('DB_USER'),
         'PASSWORD': env('DB_PASSWORD'),
-        'HOST': env('DB_HOST'),
+        'HOST': env('DATABASE_URL '),
         'PORT': env('DB_PORT'),
     }
 }

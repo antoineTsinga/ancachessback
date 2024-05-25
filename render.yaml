@@ -1,0 +1,22 @@
+databases:
+  - name: ancachess-database
+    plan: free
+    databaseName: ancachess_database
+    user: ancachess_database_user
+
+services:
+  - type: web
+    plan: free
+    name: ancachessback
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn ancachessback.asgi:application -k uvicorn.workers.UvicornWorker"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ancachess-database
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
