@@ -34,16 +34,17 @@ DEBUG = False
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = []
 
-CSRF_TRUSTED_ORIGINS = ["https://ancachess.vercel.app"]
+# Application definition
+RENDER_EXTERNAL_HOSTNAME = env('RENDER_EXTERNAL_HOSTNAME')
+ANCACHESS_FRONT_URL = env('ANCACHESS_FRONT_URL')
+ANCACHESS_FRONT_HOSTNAME = env('ANCACHESS_FRONT_HOSTNAME')
 
-RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+ALLOWED_HOSTS.append(ANCACHESS_FRONT_HOSTNAME)
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-# Application definition
-
-CORS_ALLOWED_ORIGINS = ["https://ancachess.vercel.app"]
-
+CORS_ALLOWED_ORIGINS = [ANCACHESS_FRONT_URL]
+CSRF_TRUSTED_ORIGINS = [ANCACHESS_FRONT_URL]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
@@ -51,11 +52,11 @@ CORS_ALLOWED_ORIGINS = ["https://ancachess.vercel.app"]
 DATABASES = {
 
     'default': dj_database_url.config(
-            # Replace this value with your local database's connection string.
-            default=env('DATABASE_URL'),
-            conn_max_age=600
-        )
-    }
+        # Replace this value with your local database's connection string.
+        default=env('DATABASE_URL'),
+        conn_max_age=600
+    )
+}
 
 CHANNEL_LAYERS = {
     'default': {
