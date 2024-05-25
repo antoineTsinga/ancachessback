@@ -32,13 +32,12 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 DEBUG = False
 
 # https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['ancachess.vercel.app', 'ancachess-back.onrender.com']
+ALLOWED_HOSTS = []
 
 CSRF_TRUSTED_ORIGINS = ["https://ancachess.vercel.app"]
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
-    print('RENDER_EXTERNAL_HOSTNAME', RENDER_EXTERNAL_HOSTNAME)
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
