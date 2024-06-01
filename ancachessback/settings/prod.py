@@ -27,7 +27,7 @@ def get_secret_key_from_file(file_path):
         raise Exception(f"Unable to read the secret key file: {file_path}")
 
 
-SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
+SECRET_KEY = get_secret_key_from_file(env('SECRET_KEY'))
 
 DEBUG = False
 

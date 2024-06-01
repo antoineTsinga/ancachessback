@@ -66,3 +66,8 @@ class GameConsumer(WebsocketConsumer):
         start = event["content"]
         print("start", start)
         self.send(text_data=json.dumps({"type": "start", "content": start}))
+
+    def game_rematch(self, event):
+        rematch = event["content"]
+        print("rematch", rematch)
+        self.send(text_data=json.dumps({"type": "rematch", "content": rematch}))
