@@ -11,8 +11,6 @@ class GameConsumer(WebsocketConsumer):
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chess_{self.room_name}"
-        self.timer = {"black": 600, "white": 600}
-        self.current = "white"
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -72,21 +70,20 @@ class GameConsumer(WebsocketConsumer):
 
     def game_start(self, event):
         start = event["content"]
+        time = 600
+        self.timer = {"black": time, "white": time}
+        self.current = "white"
         self.start_time = datetime.timestamp(datetime.now())
-        self.send(text_data=json.dumps({"type": "start", "content": self.start_time}))
+        self.send(
+            text_data=json.dumps(
+                {
+                    "type": "start",
+                    "content": {"startTime": self.start_time, "time": time},
+                }
+            )
+        )
 
     def game_rematch(self, event):
         rematch = event["content"]
         print("rematch", rematch)
         self.send(text_data=json.dumps({"type": "rematch", "content": rematch}))
-
-    def game_getTime(self, event):
-        now = event["content"]
-        self.timer[self.current] -= now - self.start_time
-        self.start_time = now
-        timer = {}
-        timer["timer"] = self.timer[self.current]
-        timer["color"] = self.current
-        timer["startTime"] = now
-        self.current = "black" if self.current == "white" else "white"
-        self.send(text_data=json.dumps({"type": "timer", "content": timer}))
