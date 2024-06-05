@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
+
 import os
 from .base import *
 import dj_database_url
@@ -27,7 +28,7 @@ def get_secret_key_from_file(file_path):
         raise Exception(f"Unable to read the secret key file: {file_path}")
 
 
-SECRET_KEY = get_secret_key_from_file(env('SECRET_KEY'))
+SECRET_KEY = get_secret_key_from_file(env("SECRET_KEY"))
 
 DEBUG = False
 
@@ -35,34 +36,35 @@ DEBUG = False
 ALLOWED_HOSTS = []
 
 # Application definition
-RENDER_EXTERNAL_HOSTNAME = env('RENDER_EXTERNAL_HOSTNAME')
-ANCACHESS_FRONT_URL = env('ANCACHESS_FRONT_URL')
-ANCACHESS_FRONT_HOSTNAME = env('ANCACHESS_FRONT_HOSTNAME')
+RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME")
+ANCACHESS_FRONT_URL = env("ANCACHESS_FRONT_URL")
+ANCACHESS_FRONT_HOSTNAME = env("ANCACHESS_FRONT_HOSTNAME")
+ANTOINE_PORTFOLIO = env("ANTOINE_PORTFOLIO")
 
 ALLOWED_HOSTS.append(ANCACHESS_FRONT_HOSTNAME)
+ALLOWED_HOSTS.append(ANTOINE_PORTFOLIO)
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-CORS_ALLOWED_ORIGINS = [ANCACHESS_FRONT_URL]
+CORS_ALLOWED_ORIGINS = [ANCACHESS_FRONT_URL, ANTOINE_PORTFOLIO]
 CSRF_TRUSTED_ORIGINS = [ANCACHESS_FRONT_URL]
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-
-    'default': dj_database_url.config(
+    "default": dj_database_url.config(
         # Replace this value with your local database's connection string.
-        default=env('DATABASE_URL'),
-        conn_max_age=600
+        default=env("DATABASE_URL"),
+        conn_max_age=600,
     )
 }
 
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [env('REDIS_URL')],
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [env("REDIS_URL")],
         },
     },
 }
@@ -70,7 +72,7 @@ CHANNEL_LAYERS = {
 # This production code might break development mode, so we check whether we're in DEBUG mode
 
 # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
 # and renames the files with unique names for each version to support long-term caching
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
