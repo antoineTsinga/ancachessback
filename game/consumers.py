@@ -3,6 +3,7 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from datetime import datetime
 
 
 class GameConsumer(WebsocketConsumer):
@@ -10,6 +11,8 @@ class GameConsumer(WebsocketConsumer):
     def connect(self):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chess_{self.room_name}"
+        self.timer = {"black": 30, "white": 30}
+        self.current = "white"
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
@@ -42,15 +45,20 @@ class GameConsumer(WebsocketConsumer):
         # Send message to WebSocket
         self.send(text_data=json.dumps({"type": "message", "content": message}))
 
-    # def game_state(self, event):
-    #     # Send the game state to the WebSocket
-    #     state = event["state"]
-    #     self.send(text_data=json.dumps({"type": "state", "state": state}))
-
     def game_move(self, event):
         move = event["content"]
+        now = datetime.timestamp(datetime.now())
+        self.timer[self.current] -= now - self.start_time
+        self.start_time = now
+        move["timer"] = self.timer[self.current]
+        move["color"] = self.current
+        self.current = "black" if self.current == "white" else "white"
 
-        self.send(text_data=json.dumps({"type": "move", "content": move}))
+        self.send(
+            text_data=json.dumps(
+                {"type": "move", "content": {"move": move, "startTime": now}}
+            )
+        )
 
     def game_setcolor(self, event):
         player = event["content"]
@@ -64,8 +72,8 @@ class GameConsumer(WebsocketConsumer):
 
     def game_start(self, event):
         start = event["content"]
-        print("start", start)
-        self.send(text_data=json.dumps({"type": "start", "content": start}))
+        self.start_time = datetime.timestamp(datetime.now())
+        self.send(text_data=json.dumps({"type": "start", "content": self.start_time}))
 
     def game_rematch(self, event):
         rematch = event["content"]
